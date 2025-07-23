@@ -1,3 +1,4 @@
+import { BuildDevServer } from "./BuildDevServer";
 import { BuildLoaders } from "./BuildLoaders";
 import { BuildPlugins } from "./BuildPlugins";
 import { BuildResolvers } from "./BuildResolvers";
@@ -6,7 +7,7 @@ import webpack from 'webpack'
 
 export function BuildWebpackConfig(options: BuildOptions): webpack.Configuration {
 
-    const { paths, mode } = options;
+    const { paths, mode, isDev } = options;
 
     return { //указываем тип чтобы сразу видеть подсказки типов
         mode: mode,
@@ -20,6 +21,8 @@ export function BuildWebpackConfig(options: BuildOptions): webpack.Configuration
         module: {
             rules: BuildLoaders()
         },
-        resolve: BuildResolvers()
+        resolve: BuildResolvers(),
+        devtool: isDev ? 'inline-source-map' : undefined,
+        devServer: isDev ? BuildDevServer(options) : undefined
     }
 } 
